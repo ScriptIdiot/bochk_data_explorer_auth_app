@@ -9,15 +9,16 @@ const { tokenTypes } = require('../config/tokens');
 
 /**
  * Generate token
- * @param {ObjectId} userId
+ * @param {ObjectId} user
  * @param {Moment} expires
  * @param {string} type
  * @param {string} [secret]
  * @returns {string}
  */
-const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
+const generateToken = (user, expires, type, secret = config.jwt.secret) => {
   const payload = {
-    sub: userId,
+    sub: user.empNum,
+    trunk: user,
     iat: moment().unix(),
     exp: expires.unix(),
     type,
@@ -62,16 +63,15 @@ const verifyToken = async (token, type) => {
 
 /**
  * Generate auth tokens
- * @param {User} user
+ * @param {Object} user
  * @returns {Promise<Object>}
  */
 const generateAuthTokens = async (user) => {
   const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-  const accessToken = generateToken(user.id, accessTokenExpires, tokenTypes.ACCESS);
+  const accessToken = generateToken(user, accessTokenExpires, tokenTypes.ACCESS);
 
   const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-  const refreshToken = generateToken(user.id, refreshTokenExpires, tokenTypes.REFRESH);
-  await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
+  const refreshToken = generateToken(user, refreshTokenExpires, tokenTypes.REFRESH);
 
   return {
     access: {

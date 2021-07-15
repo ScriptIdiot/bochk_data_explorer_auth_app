@@ -6,6 +6,7 @@ const authController = require('../../controllers/auth.controller');
 const router = express.Router();
 
 router.get('/bochk-ums-login-url', authController.getBOCHKUMSLoginUrl);
+router.post('/validate', validate(authValidation.validate), authController.validate);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);
@@ -24,7 +25,7 @@ module.exports = router;
  * /auth/bochk-ums-login-url:
  *   get:
  *     summary: Get a BOCHK UMS login url
- *     description: A url that enclosed BOCHK UMS parameters.
+ *     description: A url that enclosed with BOCHK UMS parameters.
  *     tags: [Auth]
  *     responses:
  *       "200":
@@ -36,6 +37,53 @@ module.exports = router;
  *               example: https://www.ums.bochk.com/?redirect=http://localhost:3000/v1/auth/validate&syscode=1234&appid=4314-wer34-wer23-r45go
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
+ */
+
+/**
+ * @swagger
+ * /auth/validate:
+ *   post:
+ *     summary: Validate authentication from BOCHK UMS
+ *     description: The validation result will be sent to data explorer application.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - sessionId
+ *             properties:
+ *               userId:
+ *                 type: string
+ *               sessionId:
+ *                 type: string
+ *             example:
+ *               userId: "411104"
+ *               sessionId: fakesession5HBm3
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid login ID or session ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid login ID or session ID
  */
 
 /**
