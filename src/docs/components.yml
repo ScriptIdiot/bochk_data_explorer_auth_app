@@ -3,20 +3,32 @@ components:
     User:
       type: object
       properties:
-        id:
+        empNum:
           type: string
-        email:
+        umsSessionId:
           type: string
-          format: email
-        name:
+        bankCode:
+          type: string
+        deptCode:
+          type: string
+        divCode:
+          type: string
+        brCode:
+          type: string
+        sysRight:
           type: string
         role:
           type: string
           enum: [user, admin]
       example:
-        id: 5ebac534954b54139806c112
-        email: fake@example.com
-        name: fake name
+        empNum: 41114
+        umsSessionId: fakesession5HBm3
+        userFullName: "CHAN TAI MAN"
+        bankCode: "012"
+        deptCode: "H90"
+        divCode: "H03"
+        brCode: "282"
+        sysRight: "X0002"
         role: user
 
     Token:

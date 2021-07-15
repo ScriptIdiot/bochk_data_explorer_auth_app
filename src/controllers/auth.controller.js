@@ -14,7 +14,6 @@ const validate = catchAsync(async (req, res) => {
   const userBody = userFactory.fromBOCHKUMSValidateCallback(req.body);
   const user = { ...userBody };
   const userInfoString = await bochkUMSService.getUserInfo(user);
-  logger.debug(userInfoString);
   const userInfoData = userFactory.fromBOCHKUMSUserInfoAPI(userInfoString);
   Object.assign(user, userInfoData);
   const tokens = await tokenService.generateAuthTokens(user);
