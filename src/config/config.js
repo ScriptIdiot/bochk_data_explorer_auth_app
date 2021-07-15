@@ -18,6 +18,12 @@ const envVarsSchema = Joi.object()
     JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
       .default(10)
       .description('minutes after which verify email token expires'),
+    BOCHK_UMS_LOGIN_URL: Joi.string().required().description('BOCHK UMS login URL'),
+    BOCHK_UMS_VALIDATE_AUTHENTICATION_CALLBACK_URL: Joi.string()
+      .required()
+      .description('application validate authentication callback URL'),
+    BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
+    BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
   })
   .unknown();
 
@@ -44,5 +50,11 @@ module.exports = {
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
     resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
+  },
+  bochkUMS: {
+    loginURL: envVars.BOCHK_UMS_LOGIN_URL,
+    validateURL: envVars.BOCHK_UMS_VALIDATE_AUTHENTICATION_CALLBACK_URL,
+    sysCode: envVars.BOCHK_UMS_SYSCODE,
+    appId: envVars.BOCHK_UMS_APP_ID,
   },
 };
