@@ -1,3 +1,5 @@
+const path = require('path');
+const favicon = require('serve-favicon');
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -20,6 +22,8 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+// set favicon
+app.use(favicon(path.join(__dirname, 'public', 'boc-icon-32.ico')));
 
 // set security HTTP headers
 app.use(helmet());
