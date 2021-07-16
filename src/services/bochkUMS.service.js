@@ -10,7 +10,7 @@ const getLoginURL = () => {
   const { loginURL, validateURL, sysCode, appId } = config.bochkUMS;
   const encodedValidateURL = encodeURIComponent(validateURL);
   const queries = `redirect=${encodedValidateURL}&syscode=${sysCode}&appid=${appId}`;
-  return `${loginURL}?${queries}`;
+  return `${loginURL}/?${queries}`;
 };
 
 /**
