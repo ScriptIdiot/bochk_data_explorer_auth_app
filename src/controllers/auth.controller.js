@@ -1,8 +1,9 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { authService, tokenService, bochkUMSService } = require('../services');
-const { userFactory } = require('../factories');
+const config = require('../config/config');
 const logger = require('../config/logger');
+const { userFactory } = require('../factories');
+const { authService, tokenService, bochkUMSService } = require('../services');
 
 const getBOCHKUMSLoginUrl = (req, res) => {
   const url = bochkUMSService.getLoginURL();
@@ -17,7 +18,11 @@ const validate = catchAsync(async (req, res) => {
   const userInfoData = userFactory.fromBOCHKUMSUserInfoAPI(userInfoString);
   Object.assign(user, userInfoData);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
+  res.cookie('accessToken', tokens.access.token, config.cookie.options);
+  res.cookie('accessTokenExpiry', tokens.access.expires, config.cookie.options);
+  res.cookie('refreshToken', tokens.refresh.token, config.cookie.options);
+  res.cookie('refreshTokenExpiry', tokens.refresh.expires, config.cookie.options);
+  res.redirect('/');
 });
 
 const login = catchAsync(async (req, res) => {
