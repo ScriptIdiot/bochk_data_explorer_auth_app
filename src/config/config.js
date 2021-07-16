@@ -24,6 +24,12 @@ const envVarsSchema = Joi.object()
       .description('application validate authentication callback URL'),
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
+    NEO4J_URL: Joi.string().required().description('neo4j server uri'),
+    NEO4J_USER: Joi.string().required().description('neo4j username'),
+    NEO4J_PASSWORD: Joi.string().required().description('neo4j password'),
+    NEO4J_DATABASE: Joi.string().required().description('neo4j database'),
+    NEO4J_SAVE_PASSWORD: Joi.boolean().default(false).description('neo4j save password'),
+    NEO4J_USE_ENCRYPTION: Joi.boolean().default(false).description('neo4j use encryption'),
   })
   .unknown();
 
@@ -38,7 +44,7 @@ module.exports = {
   port: envVars.PORT,
   cookie: {
     options: {
-      maxAge: 1000 * 60 * 15,
+      maxAge: 1000 * 60 * 120,
       httpOnly: false,
       signed: false,
     },
@@ -56,5 +62,13 @@ module.exports = {
     validateURL: envVars.BOCHK_UMS_VALIDATE_AUTHENTICATION_CALLBACK_URL,
     sysCode: envVars.BOCHK_UMS_SYSCODE,
     appId: envVars.BOCHK_UMS_APP_ID,
+  },
+  neo4j: {
+    url: envVars.NEO4J_URL,
+    user: envVars.NEO4J_USER,
+    password: envVars.NEO4J_PASSWORD,
+    database: envVars.NEO4J_DATABASE,
+    savePassword: envVars.NEO4J_SAVE_PASSWORD,
+    useEncryption: envVars.NEO4J_USE_ENCRYPTION,
   },
 };

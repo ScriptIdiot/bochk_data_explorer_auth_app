@@ -31,6 +31,22 @@ components:
         sysRight: "X0002"
         role: user
 
+    Neo4jConfig:
+      type: object
+      properties:
+        url:
+          type: string
+        user:
+          type: string
+        password:
+          type: string
+        database:
+          type: string
+        savePassword:
+          type: boolean
+        useEncryption:
+          type: boolean
+
     Token:
       type: object
       properties:
