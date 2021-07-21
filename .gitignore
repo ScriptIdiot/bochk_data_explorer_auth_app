@@ -1,5 +1,6 @@
 # Dependencies
 node_modules
+npm-packages-offline-cache
 
 # yarn error logs
 yarn-error.log

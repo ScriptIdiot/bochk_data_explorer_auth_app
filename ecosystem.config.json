@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "app",
+      "name": "bochk_auth_app",
       "script": "src/index.js",
       "instances": 1,
       "autorestart": true,
