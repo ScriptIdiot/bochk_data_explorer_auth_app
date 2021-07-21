@@ -1,16 +1,17 @@
+const https = require('https');
 const axios = require('axios');
 const config = require('../config/config');
 const logger = require('../config/logger');
+
+const getHttpsAgent = () => https.Agent({ rejectUnauthorized: false });
 
 /**
  * Get BOCHK UMS login URL
  * @returns {string}
  */
 const getLoginURL = () => {
-  const { loginURL, validateURL, sysCode, appId } = config.bochkUMS;
-  const encodedValidateURL = encodeURIComponent(validateURL);
-  const queries = `redirect=${encodedValidateURL}&syscode=${sysCode}&appid=${appId}`;
-  return `${loginURL}/?${queries}`;
+  const { domain, loginURL } = config.bochkUMS;
+  return `${domain}${loginURL}`;
 };
 
 /**
@@ -21,12 +22,13 @@ const getLoginURL = () => {
 const getUserInfo = async (user) => {
   logger.info('Getting user information from BOCHK UMS');
   logger.debug(JSON.stringify(user));
-  const { userInfoAPI, sysCode, appId } = config.bochkUMS;
+  const { domain, authCallbackURL, sysCode, appId } = config.bochkUMS;
   const queries = `syscode=${sysCode}&appid=${appId}&empnum=${user.empNum}&umssessionid=${user.umsSessionId}`;
-  const resourceURL = `${userInfoAPI}?${queries}`;
+  const resourceURL = `${domain}${authCallbackURL}?${queries}`;
   logger.debug(`Sending request to ${resourceURL}`);
   try {
-    const response = await axios.get(resourceURL);
+    const agent = getHttpsAgent();
+    const response = await axios.get(resourceURL, { httpsAgent: agent });
     return response.status === 200 ? response.data : '';
   } catch (e) {
     logger.error(e);

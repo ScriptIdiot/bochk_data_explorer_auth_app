@@ -17,11 +17,9 @@ const envVarsSchema = Joi.object()
     JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
       .default(10)
       .description('minutes after which verify email token expires'),
+    BOCHK_UMS_DOMAIN: Joi.string().required().description('BOCHK UMS domain'),
     BOCHK_UMS_LOGIN_URL: Joi.string().required().description('BOCHK UMS login URL'),
-    BOCHK_UMS_USER_INFO_API_URL: Joi.string().required().description('BOCHK UMS user information API URL'),
-    BOCHK_UMS_VALIDATE_AUTHENTICATION_CALLBACK_URL: Joi.string()
-      .required()
-      .description('application validate authentication callback URL'),
+    BOCHK_UMS_AUTH_CALLBACK_URL: Joi.string().required().description('BOCHK UMS auth callback URL'),
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
     NEO4J_URL: Joi.string().required().description('neo4j server uri'),
@@ -57,9 +55,9 @@ module.exports = {
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
   },
   bochkUMS: {
+    domain: envVars.BOCHK_UMS_DOMAIN,
     loginURL: envVars.BOCHK_UMS_LOGIN_URL,
-    userInfoAPI: envVars.BOCHK_UMS_USER_INFO_API_URL,
-    validateURL: envVars.BOCHK_UMS_VALIDATE_AUTHENTICATION_CALLBACK_URL,
+    authCallbackURL: envVars.BOCHK_UMS_AUTH_CALLBACK_URL,
     sysCode: envVars.BOCHK_UMS_SYSCODE,
     appId: envVars.BOCHK_UMS_APP_ID,
   },
