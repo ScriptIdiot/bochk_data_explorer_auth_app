@@ -10,7 +10,7 @@ const jwtOptions = {
 
 const jwtVerify = async (payload, done) => {
   try {
-    logger.debug(JSON.stringify(payload));
+    logger.debug(`Verify JWT: ${JSON.stringify(payload)}`);
     if (payload.type !== tokenTypes.ACCESS) {
       throw new Error('Invalid token type');
     }

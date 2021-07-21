@@ -1,10 +1,13 @@
+const logger = require('../config/logger');
 const { configService } = require('../services');
 
-const getNeo4jConfig = (req, res) => {
-  const neo4jConfigurations = configService.getNeo4jConfig();
-  res.send(neo4jConfigurations);
+const getNeo4jConnections = (req, res) => {
+  logger.debug(`Getting NEO4J config for user: ${JSON.stringify(req.user)}`);
+  const neo4jConnections = configService.getNeo4jConnections(req.user);
+  logger.debug(`Retrieved matched with user sysRight NEO4J connections: ${JSON.stringify(neo4jConnections)}`);
+  res.send(neo4jConnections);
 };
 
 module.exports = {
-  getNeo4jConfig,
+  getNeo4jConnections,
 };
