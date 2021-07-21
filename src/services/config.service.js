@@ -19,16 +19,17 @@ const getNeo4jConnections = (user) => {
   const neo4jConns = user.sysRight
     .split(',')
     .map((right) => {
+      const connections = [];
       for (let i = 0; i < newMappings.length; i += 1) {
         const mapping = newMappings[i];
         if (mapping.regExp.test(right)) {
-          return mapping.neo4jConn;
+          connections.push(mapping.neo4jConn);
         }
-        return null;
       }
-      return null;
+      return connections;
     })
-    .filter((conn) => conn !== null);
+    .filter((connections) => connections.length > 0)
+    .reduce((accumulator, current) => accumulator.concat(current), []);
   return neo4jConns;
 };
 

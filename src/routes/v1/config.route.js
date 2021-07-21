@@ -4,7 +4,7 @@ const configController = require('../../controllers/config.controller');
 
 const router = express.Router();
 
-router.route('/neo4j').get(auth('getNeo4jConnections'), configController.getNeo4jConnections);
+router.route('/neo4j-connections').get(auth('getNeo4jConnections'), configController.getNeo4jConnections);
 
 module.exports = router;
 
