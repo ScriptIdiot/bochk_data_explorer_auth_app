@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
+const tryParseJSON = require('../utils/tryParseJSON');
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
@@ -22,12 +23,8 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_AUTH_CALLBACK_URL: Joi.string().required().description('BOCHK UMS auth callback URL'),
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
-    NEO4J_URL: Joi.string().required().description('neo4j server uri'),
-    NEO4J_USER: Joi.string().required().description('neo4j username'),
-    NEO4J_PASSWORD: Joi.string().required().description('neo4j password'),
-    NEO4J_DATABASE: Joi.string().required().description('neo4j database'),
-    NEO4J_SAVE_PASSWORD: Joi.boolean().default(false).description('neo4j save password'),
-    NEO4J_USE_ENCRYPTION: Joi.boolean().default(false).description('neo4j use encryption'),
+    BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS: Joi.string().required().description('sysrights that allowed to access'),
+    BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
   })
   .unknown();
 
@@ -60,13 +57,9 @@ module.exports = {
     authCallbackURL: envVars.BOCHK_UMS_AUTH_CALLBACK_URL,
     sysCode: envVars.BOCHK_UMS_SYSCODE,
     appId: envVars.BOCHK_UMS_APP_ID,
+    allowedAccessSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS, []),
   },
-  neo4j: {
-    url: envVars.NEO4J_URL,
-    user: envVars.NEO4J_USER,
-    password: envVars.NEO4J_PASSWORD,
-    database: envVars.NEO4J_DATABASE,
-    savePassword: envVars.NEO4J_SAVE_PASSWORD,
-    useEncryption: envVars.NEO4J_USE_ENCRYPTION,
+  bochkNeo4jConn: {
+    mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
   },
 };

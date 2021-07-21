@@ -12,12 +12,12 @@ const fromBOCHKUMSValidateCallback = (reqBody) => {
 };
 
 /**
- * Convert BOCHK UMS user info API response to our standard
- * @param {string} userInfo - user info
+ * Convert BOCHK UMS verify credentials API response to our standard
+ * @param {string} responseData - user info
  * @returns {Object}
  */
-const fromBOCHKUMSUserInfoAPI = (userInfo) => {
-  const userInfoArray = userInfo.split(';');
+const fromBOCHKUMSVerifyCredentialsAPI = (responseData) => {
+  const userInfoArray = responseData.split(';');
   if (userInfoArray && userInfoArray.length === 8) {
     const authStatus = userInfoArray[0].split('=')[1];
     const empNum = userInfoArray[1].split('=')[1];
@@ -45,5 +45,5 @@ const fromBOCHKUMSUserInfoAPI = (userInfo) => {
 
 module.exports = {
   fromBOCHKUMSValidateCallback,
-  fromBOCHKUMSUserInfoAPI,
+  fromBOCHKUMSVerifyCredentialsAPI,
 };

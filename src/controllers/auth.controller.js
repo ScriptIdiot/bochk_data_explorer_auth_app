@@ -13,10 +13,9 @@ const getBOCHKUMSLoginUrl = (req, res) => {
 const validate = catchAsync(async (req, res) => {
   logger.debug(JSON.stringify(req.body));
   const userBody = userFactory.fromBOCHKUMSValidateCallback(req.body);
-  const user = { ...userBody };
-  const userInfoString = await bochkUMSService.getUserInfo(user);
-  const userInfoData = userFactory.fromBOCHKUMSUserInfoAPI(userInfoString);
-  Object.assign(user, userInfoData);
+  let user = { ...userBody };
+  user = await bochkUMSService.verifyCredentials(user);
+  logger.debug(JSON.stringify(user));
   const tokens = await tokenService.generateAuthTokens(user);
   res.cookie('accessToken', tokens.access.token, config.cookie.options);
   res.cookie('accessTokenExpiry', tokens.access.expires, config.cookie.options);
