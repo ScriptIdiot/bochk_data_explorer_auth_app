@@ -14,6 +14,14 @@ const validate = catchAsync(async (req, res) => {
   logger.debug(JSON.stringify(req.body));
   const userBody = userFactory.fromBOCHKUMSValidateCallback(req.body);
   let user = { ...userBody };
+  if (config.isDev || config.bochkUMS.shouldEnableSimulationOfUMS) {
+    logger.debug(JSON.stringify(req.query));
+    const userQuery = userFactory.fromBOCHKUMSValidateCallback(req.query);
+    user = {
+      ...userQuery,
+      ...userBody,
+    };
+  }
   user = await bochkUMSService.verifyCredentials(user);
   logger.debug(JSON.stringify(user));
   const tokens = await tokenService.generateAuthTokens(user);

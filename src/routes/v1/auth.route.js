@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../../config/config');
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
@@ -6,6 +7,9 @@ const authController = require('../../controllers/auth.controller');
 const router = express.Router();
 
 router.get('/bochk-ums-login-url', authController.getBOCHKUMSLoginUrl);
+if (config.isDev || config.bochkUMS.shouldEnableSimulationOfUMS) {
+  router.get('/validate', authController.validate);
+}
 router.post('/validate', validate(authValidation.validate), authController.validate);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);

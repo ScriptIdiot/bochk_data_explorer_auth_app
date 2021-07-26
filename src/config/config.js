@@ -24,6 +24,7 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
     BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS: Joi.string().required().description('sysrights that allowed to access'),
+    BOCHK_UMS_SHOULD_SIMULATE_UMS_APP: Joi.boolean().description('should enable simulation of UMS or not').default(false),
     BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
   })
   .unknown();
@@ -36,6 +37,8 @@ if (error) {
 
 module.exports = {
   env: envVars.NODE_ENV,
+  isDev: envVars.NODE_ENV === 'development',
+  isProd: envVars.NODE_ENV === 'production',
   port: envVars.PORT,
   cookie: {
     options: {
@@ -58,6 +61,7 @@ module.exports = {
     sysCode: envVars.BOCHK_UMS_SYSCODE,
     appId: envVars.BOCHK_UMS_APP_ID,
     allowedAccessSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS, []),
+    shouldEnableSimulationOfUMS: envVars.BOCHK_UMS_SHOULD_SIMULATE_UMS_APP,
   },
   bochkNeo4jConn: {
     mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
