@@ -26,6 +26,7 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS: Joi.string().required().description('sysrights that allowed to access'),
     BOCHK_UMS_SHOULD_SIMULATE_UMS_APP: Joi.boolean().description('should enable simulation of UMS or not').default(false),
     BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
+    BOCHK_CYBER_SAMPLE_QUERIES: Joi.string().default(null),
   })
   .unknown();
 
@@ -65,5 +66,8 @@ module.exports = {
   },
   bochkNeo4jConn: {
     mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
+  },
+  bochkDataExplorer: {
+    cyberSampleQueries: tryParseJSON(envVars.BOCHK_CYBER_SAMPLE_QUERIES, []),
   },
 };

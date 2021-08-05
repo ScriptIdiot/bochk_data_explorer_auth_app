@@ -47,6 +47,16 @@ components:
         useEncryption:
           type: boolean
 
+    CyberSampleQuery:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: number
+        code:
+          type: string
+
     Token:
       type: object
       properties:

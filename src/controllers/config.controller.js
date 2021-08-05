@@ -8,6 +8,12 @@ const getNeo4jConnections = (req, res) => {
   res.send(neo4jConnections);
 };
 
+const getCyberSampleQueries = (req, res) => {
+  const cyberSampleQueries = configService.getCyberSampleQueries();
+  res.send(cyberSampleQueries);
+};
+
 module.exports = {
   getNeo4jConnections,
+  getCyberSampleQueries,
 };

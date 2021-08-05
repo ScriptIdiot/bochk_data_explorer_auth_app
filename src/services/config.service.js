@@ -33,6 +33,16 @@ const getNeo4jConnections = (user) => {
   return neo4jConns;
 };
 
+const getCyberSampleQueries = () => {
+  const { cyberSampleQueries } = config.bochkDataExplorer;
+  return cyberSampleQueries.map((query, i) => ({
+    text: query.header || `Sample Query Header hasn't specified at index: ${i}`,
+    value: i,
+    code: query.query || `Sample Query Content hasn't specified at index: ${i}`,
+  }));
+};
+
 module.exports = {
   getNeo4jConnections,
+  getCyberSampleQueries,
 };

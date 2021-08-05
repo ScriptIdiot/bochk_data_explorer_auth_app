@@ -5,6 +5,7 @@ const configController = require('../../controllers/config.controller');
 const router = express.Router();
 
 router.route('/neo4j-connections').get(auth('getNeo4jConnections'), configController.getNeo4jConnections);
+router.route('/cyber-sample-queries').get(auth('getCyberSampleQueries'), configController.getCyberSampleQueries);
 
 module.exports = router;
 
@@ -17,7 +18,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /config/neo4j:
+ * /config/neo4j-connections:
  *   get:
  *     summary: Get Neo4j connection configurations
  *     description: Logged in users can fetch Neo4j connection configurations
@@ -31,6 +32,30 @@ module.exports = router;
  *           application/json:
  *             schema:
  *                $ref: '#/components/schemas/Neo4jConfig'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /config/cyber-sample-queries:
+ *   get:
+ *     summary: Get Cyber Sample Queries for Data Explorer
+ *     description: Logged in users can fetch cyber sample queries
+ *     tags: [Config]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *                $ref: '#/components/schemas/CyberSampleQuery'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
