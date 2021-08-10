@@ -20,6 +20,10 @@ const envVarsSchema = Joi.object()
       .description('minutes after which verify email token expires'),
     BOCHK_UMS_DOMAIN: Joi.string().required().description('BOCHK UMS domain'),
     BOCHK_UMS_LOGIN_URL: Joi.string().required().description('BOCHK UMS login URL'),
+    BOCHK_UMS_DECRYPT_EMPNUM_JAR_LOCATION: Joi.string().required().description('used for decrypt the empnum'),
+    BOCHK_UMS_DECRYPT_EMPNUM_JAR_CLASS_NAME: Joi.string()
+      .required()
+      .description('call class from jar to decrypt the empnum'),
     BOCHK_UMS_AUTH_CALLBACK_URL: Joi.string().required().description('BOCHK UMS auth callback URL'),
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
@@ -61,6 +65,8 @@ module.exports = {
     authCallbackURL: envVars.BOCHK_UMS_AUTH_CALLBACK_URL,
     sysCode: envVars.BOCHK_UMS_SYSCODE,
     appId: envVars.BOCHK_UMS_APP_ID,
+    decryptEmpNumJarLocation: envVars.BOCHK_UMS_DECRYPT_EMPNUM_JAR_LOCATION,
+    decryptEmpNumJarClassName: envVars.BOCHK_UMS_DECRYPT_EMPNUM_JAR_CLASS_NAME,
     allowedAccessSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS, []),
     shouldEnableSimulationOfUMS: envVars.BOCHK_UMS_SHOULD_SIMULATE_UMS_APP,
   },

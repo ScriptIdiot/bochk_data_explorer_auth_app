@@ -3,8 +3,11 @@ const { password } = require('./custom.validation');
 
 const validate = {
   body: Joi.object().keys({
-    userId: Joi.string().required(),
-    sessionId: Joi.string().required(),
+    userId: Joi.string(),
+    sessionId: Joi.string(),
+    U: Joi.string(),
+    R: Joi.string(),
+    ID: Joi.string(),
   }),
 };
 

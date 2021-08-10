@@ -22,6 +22,13 @@ const validate = catchAsync(async (req, res) => {
       ...userBody,
     };
   }
+  if (!user.empNum) {
+    const decryptedUser = await bochkUMSService.decryptEmpNum(req.body);
+    user = {
+      ...user,
+      ...decryptedUser,
+    };
+  }
   user = await bochkUMSService.verifyCredentials(user);
   logger.debug(JSON.stringify(user));
   const tokens = await tokenService.generateAuthTokens(user);

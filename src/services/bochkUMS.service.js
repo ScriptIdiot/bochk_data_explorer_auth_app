@@ -5,6 +5,7 @@ const config = require('../config/config');
 const logger = require('../config/logger');
 const ApiError = require('../utils/ApiError');
 const { userFactory } = require('../factories');
+const executeChildProcess = require('../utils/executeChildProcess');
 
 const getHttpsAgent = () => https.Agent({ rejectUnauthorized: false });
 
@@ -15,6 +16,31 @@ const getHttpsAgent = () => https.Agent({ rejectUnauthorized: false });
 const getLoginURL = () => {
   const { domain, loginURL } = config.bochkUMS;
   return `${domain}${loginURL}`;
+};
+
+/**
+ * Decrypt empNum from BOCHK UMS response
+ * @param {Object} parameters request parameters
+ * @returns {Promise<Object>} user object
+ */
+const decryptEmpNum = async (parameters) => {
+  logger.info(`Decrypt empNum from BOCHK UMS: ${JSON.stringify(parameters)}`);
+  const { U: uFromParam, R: rFromParam, ID: idFromParam } = parameters;
+  if (!uFromParam || !rFromParam || !idFromParam) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
+  }
+  const jarLocation = config.bochkUMS.decryptEmpNumJarLocation;
+  const jarClassName = config.bochkUMS.decryptEmpNumJarClassName;
+  const command = `java -cp ${jarLocation} ${jarClassName} ${uFromParam} ${rFromParam} D`;
+  try {
+    const empNum = await executeChildProcess(command);
+    return {
+      empNum,
+      umsSessionId: idFromParam,
+    };
+  } catch (err) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
+  }
 };
 
 /**
@@ -66,5 +92,6 @@ const verifyCredentials = async (user) => {
 
 module.exports = {
   getLoginURL,
+  decryptEmpNum,
   verifyCredentials,
 };
