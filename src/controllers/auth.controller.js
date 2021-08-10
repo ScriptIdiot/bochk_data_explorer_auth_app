@@ -18,8 +18,8 @@ const validate = catchAsync(async (req, res) => {
     logger.debug(JSON.stringify(req.query));
     const userQuery = userFactory.fromBOCHKUMSValidateCallback(req.query);
     user = {
-      ...userQuery,
       ...userBody,
+      ...userQuery,
     };
   }
   if (!user.empNum) {
