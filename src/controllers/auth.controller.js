@@ -22,7 +22,7 @@ const validate = catchAsync(async (req, res) => {
       ...userQuery,
     };
   }
-  if (!user.empNum) {
+  if (config.bochkUMS.shouldDecryptEmpNumWithJar && !user.empNum) {
     const decryptedUser = await bochkUMSService.decryptEmpNum(req.body);
     user = {
       ...user,

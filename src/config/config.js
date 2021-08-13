@@ -29,6 +29,9 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
     BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS: Joi.string().required().description('sysrights that allowed to access'),
     BOCHK_UMS_SHOULD_SIMULATE_UMS_APP: Joi.boolean().description('should enable simulation of UMS or not').default(false),
+    BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR: Joi.boolean()
+      .description('should decrypt employee number with jar file or not')
+      .default(false),
     BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
     BOCHK_CYBER_SAMPLE_QUERIES_MAPPINGS: Joi.string().description('user group and cyber queries mappings').default(null),
   })
@@ -69,6 +72,7 @@ module.exports = {
     decryptEmpNumJarClassName: envVars.BOCHK_UMS_DECRYPT_EMPNUM_JAR_CLASS_NAME,
     allowedAccessSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS, []),
     shouldEnableSimulationOfUMS: envVars.BOCHK_UMS_SHOULD_SIMULATE_UMS_APP,
+    shouldDecryptEmpNumWithJar: envVars.BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR,
   },
   bochkNeo4jConn: {
     mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
