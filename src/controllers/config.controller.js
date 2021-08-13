@@ -9,7 +9,9 @@ const getNeo4jConnections = (req, res) => {
 };
 
 const getCyberSampleQueries = (req, res) => {
-  const cyberSampleQueries = configService.getCyberSampleQueries();
+  logger.debug(`Getting Data Explorer sample cyber queries config for user: ${JSON.stringify(req.user)}`);
+  const cyberSampleQueries = configService.getCyberSampleQueries(req.user);
+  logger.debug(`Retrieved matched with user sysRight sample cyber queries: ${JSON.stringify(cyberSampleQueries)}`);
   res.send(cyberSampleQueries);
 };
 

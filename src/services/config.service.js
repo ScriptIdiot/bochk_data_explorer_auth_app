@@ -5,7 +5,7 @@ const ApiError = require('../utils/ApiError');
 /**
  * Get Neo4j connection configurations from config file
  * @param {Object} user user object
- * @returns {Object}
+ * @returns {Array}
  */
 const getNeo4jConnections = (user) => {
   if (!user || !user.sysRight) {
@@ -33,13 +33,39 @@ const getNeo4jConnections = (user) => {
   return neo4jConns;
 };
 
-const getCyberSampleQueries = () => {
-  const { cyberSampleQueries } = config.bochkDataExplorer;
-  return cyberSampleQueries.map((query, i) => ({
-    text: query.header || `Sample Query Header hasn't specified at index: ${i}`,
-    value: i,
-    code: query.query || `Sample Query Content hasn't specified at index: ${i}`,
+/**
+ * Get Data Explorer sample cyber queries from config file
+ * @param {Object} user user object
+ * @returns {Array}
+ */
+const getCyberSampleQueries = (user) => {
+  if (!user || !user.sysRight) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
+  }
+  const { cyberSampleQueriesMappings: mappings } = config.bochkDataExplorer;
+  const newMappings = mappings.map((mapping) => ({
+    ...mapping,
+    regExp: RegExp(`^.*${mapping.key || ''}\\d+.*`),
   }));
+  const sampleCyberQueries = user.sysRight
+    .split(',')
+    .map((right) => {
+      let connections = [];
+      for (let i = 0; i < newMappings.length; i += 1) {
+        const mapping = newMappings[i];
+        if (mapping.regExp.test(right)) {
+          connections = connections.concat(mapping.sampleQueries);
+        }
+      }
+      return connections;
+    })
+    .reduce((accumulator, current) => accumulator.concat(current), [])
+    .map((query, i) => ({
+      text: query.header || `Sample Query Header hasn't specified at index: ${i}`,
+      value: i,
+      code: query.query || `Sample Query Content hasn't specified at index: ${i}`,
+    }));
+  return sampleCyberQueries;
 };
 
 module.exports = {
