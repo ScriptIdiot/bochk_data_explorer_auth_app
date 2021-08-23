@@ -1,10 +1,10 @@
 /**
- * Convert BOCHK UMS validate callback request body to our standard
- * @param {Object} reqBody - request body
+ * Convert BOCHK UMS validate callback request payload to our standard
+ * @param {Object} requestPayload - request payload
  * @returns {Object}
  */
-const fromBOCHKUMSValidateCallback = (reqBody) => {
-  const { userId, sessionId } = reqBody;
+const fromBOCHKUMSValidateCallback = (requestPayload) => {
+  const { empnum: userId, umssessionid: sessionId } = requestPayload;
   return {
     empNum: userId,
     umsSessionId: sessionId,
@@ -26,7 +26,7 @@ const fromBOCHKUMSVerifyCredentialsAPI = (responseData) => {
     const deptCode = userInfoArray[4].split('=')[1];
     const divCode = userInfoArray[5].split('=')[1];
     const brCode = userInfoArray[6].split('=')[1];
-    const sysRight = userInfoArray[7].split('=')[1];
+    const sysRight = userInfoArray[7].split('=')[1].replace('\n', '');
     return {
       isSuccess: authStatus.toUpperCase() === 'SUCCESS',
       authStatus,

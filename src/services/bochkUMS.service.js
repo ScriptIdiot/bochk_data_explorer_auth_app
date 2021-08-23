@@ -51,7 +51,7 @@ const decryptEmpNum = async (parameters) => {
 const verifyCredentials = async (user) => {
   logger.info(`Verify user credentials from BOCHK UMS: ${JSON.stringify(user)}`);
   const { domain, authCallbackURL, sysCode, appId } = config.bochkUMS;
-  const queries = `syscode=${sysCode}&appid=${appId}&empnum=${user.empNum}&umssessionid=${user.umsSessionId}`;
+  const queries = `syscode=${sysCode}&appid=${sysCode}${appId}&empnum=${user.empNum}&umssessionid=${user.umsSessionId}`;
   const resourceURL = `${domain}${authCallbackURL}?${queries}`;
   logger.debug(`Sending request to ${resourceURL}`);
   const agent = getHttpsAgent();
@@ -64,9 +64,7 @@ const verifyCredentials = async (user) => {
       const { allowedAccessSysRights } = config.bochkUMS;
       const rights = sysRight.split(',');
       logger.debug(JSON.stringify(rights));
-      const targetSysRightRegExpList = allowedAccessSysRights.map((allowedSysRight) =>
-        RegExp(`^.*${allowedSysRight}\\d+.*`)
-      );
+      const targetSysRightRegExpList = allowedAccessSysRights.map((allowedSysRight) => RegExp(`^.*${allowedSysRight}.*`));
       const checkSysRightResults = rights.map((right) => {
         for (let i = 0; i < targetSysRightRegExpList.length; i += 1) {
           if (targetSysRightRegExpList[i].test(right)) {

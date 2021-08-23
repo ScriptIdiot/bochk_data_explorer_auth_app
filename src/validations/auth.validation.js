@@ -1,7 +1,17 @@
 const Joi = require('joi');
 const { password } = require('./custom.validation');
 
-const validate = {
+const validateGetRequest = {
+  query: Joi.object().keys({
+    empnum: Joi.string(),
+    umssessionid: Joi.string(),
+    U: Joi.string(),
+    R: Joi.string(),
+    ID: Joi.string(),
+  }),
+};
+
+const validatePostRequest = {
   body: Joi.object().keys({
     userId: Joi.string(),
     sessionId: Joi.string(),
@@ -60,7 +70,8 @@ const verifyEmail = {
 };
 
 module.exports = {
-  validate,
+  validateGetRequest,
+  validatePostRequest,
   register,
   login,
   logout,

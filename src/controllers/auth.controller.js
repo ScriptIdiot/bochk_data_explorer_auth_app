@@ -11,8 +11,12 @@ const getBOCHKUMSLoginUrl = (req, res) => {
 };
 
 const validate = catchAsync(async (req, res) => {
-  logger.debug(JSON.stringify(req.body));
-  const userBody = userFactory.fromBOCHKUMSValidateCallback(req.body);
+  const requestPayload = {
+    ...req.body,
+    ...req.query,
+  };
+  logger.debug(JSON.stringify(requestPayload));
+  const userBody = userFactory.fromBOCHKUMSValidateCallback(requestPayload);
   let user = { ...userBody };
   if (config.isDev || config.bochkUMS.shouldEnableSimulationOfUMS) {
     logger.debug(JSON.stringify(req.query));
@@ -23,7 +27,7 @@ const validate = catchAsync(async (req, res) => {
     };
   }
   if (config.bochkUMS.shouldDecryptEmpNumWithJar && !user.empNum) {
-    const decryptedUser = await bochkUMSService.decryptEmpNum(req.body);
+    const decryptedUser = await bochkUMSService.decryptEmpNum(requestPayload);
     user = {
       ...user,
       ...decryptedUser,

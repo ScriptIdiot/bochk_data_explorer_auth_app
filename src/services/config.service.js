@@ -14,7 +14,7 @@ const getNeo4jConnections = (user) => {
   const { mappings } = config.bochkNeo4jConn;
   const newMappings = mappings.map((mapping) => ({
     ...mapping,
-    regExp: RegExp(`^.*${mapping.key || ''}\\d+.*`),
+    regExp: RegExp(`^.*${mapping.key || ''}+.*`),
   }));
   const neo4jConns = user.sysRight
     .split(',')
