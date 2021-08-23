@@ -3,6 +3,7 @@ const httpStatus = require('http-status');
 const config = require('../config/config');
 const logger = require('../config/logger');
 const ApiError = require('../utils/ApiError');
+const { bochkUMSService } = require('../services');
 
 const errorConverter = (err, req, res, next) => {
   let error = err;
@@ -18,6 +19,17 @@ const errorConverter = (err, req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   let { statusCode, message } = err;
+
+  if (statusCode === 401) {
+    const bochkUMSLoginUrl = bochkUMSService.getLoginURL();
+    res.redirect(bochkUMSLoginUrl);
+    return;
+  }
+  if (statusCode === 403) {
+    res.redirect('/?errCode=403');
+    return;
+  }
+
   if (config.env === 'production' && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
