@@ -34,20 +34,20 @@ const getNeo4jConnections = (user) => {
 };
 
 /**
- * Get Data Explorer sample cyber queries from config file
+ * Get Data Explorer sample cypher queries from config file
  * @param {Object} user user object
  * @returns {Array}
  */
-const getCyberSampleQueries = (user) => {
+const getCypherSampleQueries = (user) => {
   if (!user || !user.sysRight) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
   }
-  const { cyberSampleQueriesMappings: mappings } = config.bochkDataExplorer;
+  const { cypherSampleQueriesMappings: mappings } = config.bochkDataExplorer;
   const newMappings = mappings.map((mapping) => ({
     ...mapping,
-    regExp: RegExp(`^.*${mapping.key || ''}\\d+.*`),
+    regExp: RegExp(`^.*${mapping.key || ''}.*`),
   }));
-  const sampleCyberQueries = user.sysRight
+  const sampleCypherQueries = user.sysRight
     .split(',')
     .map((right) => {
       let connections = [];
@@ -65,10 +65,10 @@ const getCyberSampleQueries = (user) => {
       value: i,
       code: query.query || `Sample Query Content hasn't specified at index: ${i}`,
     }));
-  return sampleCyberQueries;
+  return sampleCypherQueries;
 };
 
 module.exports = {
   getNeo4jConnections,
-  getCyberSampleQueries,
+  getCypherSampleQueries,
 };

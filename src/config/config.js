@@ -33,7 +33,7 @@ const envVarsSchema = Joi.object()
       .description('should decrypt employee number with jar file or not')
       .default(false),
     BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
-    BOCHK_CYBER_SAMPLE_QUERIES_MAPPINGS: Joi.string().description('user group and cyber queries mappings').default(null),
+    BOCHK_CYPHER_SAMPLE_QUERIES_MAPPINGS: Joi.string().description('user group and cypher queries mappings').default(null),
   })
   .unknown();
 
@@ -78,6 +78,6 @@ module.exports = {
     mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
   },
   bochkDataExplorer: {
-    cyberSampleQueriesMappings: tryParseJSON(envVars.BOCHK_CYBER_SAMPLE_QUERIES_MAPPINGS, []),
+    cypherSampleQueriesMappings: tryParseJSON(envVars.BOCHK_CYPHER_SAMPLE_QUERIES_MAPPINGS, []),
   },
 };

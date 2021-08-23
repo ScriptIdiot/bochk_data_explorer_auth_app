@@ -8,14 +8,14 @@ const getNeo4jConnections = (req, res) => {
   res.send(neo4jConnections);
 };
 
-const getCyberSampleQueries = (req, res) => {
-  logger.debug(`Getting Data Explorer sample cyber queries config for user: ${JSON.stringify(req.user)}`);
-  const cyberSampleQueries = configService.getCyberSampleQueries(req.user);
-  logger.debug(`Retrieved matched with user sysRight sample cyber queries: ${JSON.stringify(cyberSampleQueries)}`);
-  res.send(cyberSampleQueries);
+const getCypherSampleQueries = (req, res) => {
+  logger.debug(`Getting Data Explorer sample cypher queries config for user: ${JSON.stringify(req.user)}`);
+  const cypherSampleQueries = configService.getCypherSampleQueries(req.user);
+  logger.debug(`Retrieved matched with user sysRight sample cypher queries: ${JSON.stringify(cypherSampleQueries)}`);
+  res.send(cypherSampleQueries);
 };
 
 module.exports = {
   getNeo4jConnections,
-  getCyberSampleQueries,
+  getCypherSampleQueries,
 };

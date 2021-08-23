@@ -47,7 +47,7 @@ components:
         useEncryption:
           type: boolean
 
-    CyberSampleQuery:
+    CypherSampleQuery:
       type: object
       properties:
         text:
