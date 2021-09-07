@@ -1,0 +1,15 @@
+[
+  {
+    "key": "IT",
+    "neo4jConn": {
+      "title": "Neo4j",
+      "description": "IT Group",
+      "url": "localhost",
+      "user": "neo4j",
+      "password": "abcd1234",
+      "database": "neo4j",
+      "useEncryption": true,
+      "savePassword": false
+    }
+  }
+]

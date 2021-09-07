@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const Joi = require('joi');
 const tryParseJSON = require('../utils/tryParseJSON');
+const getJSONFileContent = require('../utils/getJSONFileContent');
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
@@ -32,8 +33,10 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR: Joi.boolean()
       .description('should decrypt employee number with jar file or not')
       .default(false),
-    BOCHK_NEO4J_SYSRIGHT_MAPPINGS: Joi.string().required().description('SysRight and Neo4j connection mappings'),
-    BOCHK_CYPHER_SAMPLE_QUERIES_MAPPINGS: Joi.string().description('user group and cypher queries mappings').default(null),
+    BOCHK_NEO4J_SYSRIGHT_MAPPING_FILEPATH_ARRAY: Joi.string().required().description('SysRight JSON config filepath array'),
+    BOCHK_CYPHER_SAMPLE_QUERIES_MAPPING_FILEPATH_ARRAY: Joi.string()
+      .required()
+      .description('user group and cypher queries JSON config filepath array'),
   })
   .unknown();
 
@@ -75,9 +78,27 @@ module.exports = {
     shouldDecryptEmpNumWithJar: envVars.BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR,
   },
   bochkNeo4jConn: {
-    mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPINGS, []),
+    mappings: tryParseJSON(envVars.BOCHK_NEO4J_SYSRIGHT_MAPPING_FILEPATH_ARRAY, [])
+      .map((filepath) => {
+        return getJSONFileContent(filepath, []);
+      })
+      .reduce((accumulator, current) => {
+        if (Array.isArray(current)) {
+          return accumulator.concat(current);
+        }
+        return accumulator;
+      }, []),
   },
   bochkDataExplorer: {
-    cypherSampleQueriesMappings: tryParseJSON(envVars.BOCHK_CYPHER_SAMPLE_QUERIES_MAPPINGS, []),
+    cypherSampleQueriesMappings: tryParseJSON(envVars.BOCHK_CYPHER_SAMPLE_QUERIES_MAPPING_FILEPATH_ARRAY, [])
+      .map((filePath) => {
+        return getJSONFileContent(filePath, []);
+      })
+      .reduce((accumulator, current) => {
+        if (Array.isArray(current)) {
+          return accumulator.concat(current);
+        }
+        return accumulator;
+      }, []),
   },
 };

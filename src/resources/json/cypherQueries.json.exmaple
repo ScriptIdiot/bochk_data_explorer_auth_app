@@ -1,0 +1,15 @@
+[
+  {
+    "key": "IT",
+    "sampleQueries": [
+      {
+        "header": "Sample Query 01",
+        "query": "MATCH (n1)-[r]->(n2) RETURN r, n1, n2 LIMIT 25"
+      },
+      {
+        "header": "No. XXXX - CIN No+特定時段+交易地區",
+        "query": "MATCH (s:Person)-->(m:Movie)<--(t:Person)\nWHERE s.name = $NAME\nWITH distinct s, m.title AS movieTitle,t\nRETURN{type:$TYPE,start: id(s), end: id(t), properties: { movie: movieTitle }}"
+      }
+    ]
+  }
+]

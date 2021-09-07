@@ -9,5 +9,8 @@ yarn-error.log
 .env*
 !.env*.example
 
+# Server configuration
+src/resources/json/*.json
+
 # Code coverage
 coverage
