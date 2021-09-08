@@ -1,4 +1,3 @@
-const CryptoJS = require('crypto-js');
 const httpStatus = require('http-status');
 const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
@@ -24,10 +23,6 @@ const getNeo4jConnections = (user) => {
       for (let i = 0; i < newMappings.length; i += 1) {
         const mapping = newMappings[i];
         if (mapping.regExp.test(right)) {
-          const { neo4jConn } = mapping;
-          if (neo4jConn.password) {
-            neo4jConn.password = CryptoJS.AES.encrypt(neo4jConn.password, 'bochk_ngp').toString();
-          }
           connections.push(mapping.neo4jConn);
         }
       }
