@@ -1,6 +1,7 @@
-const dotenv = require('dotenv');
-const path = require('path');
 const Joi = require('joi');
+const path = require('path');
+const dotenv = require('dotenv');
+const CryptoJS = require('crypto-js');
 const tryParseJSON = require('../utils/tryParseJSON');
 const getJSONFileContent = require('../utils/getJSONFileContent');
 
@@ -94,7 +95,18 @@ module.exports = {
           return accumulator.concat(current);
         }
         return accumulator;
-      }, []),
+      }, [])
+      .map((mapping) => {
+        if (mapping.neo4jConn.password) {
+          return Object.assign(mapping, {
+            neo4jConn: {
+              ...mapping.neo4jConn,
+              password: CryptoJS.AES.encrypt(mapping.neo4jConn.password, 'bochk_ngp').toString(),
+            },
+          });
+        }
+        return mapping;
+      }),
   },
   bochkDataExplorer: {
     cypherSampleQueriesLimit: envVars.BOCHK_CYPHER_SAMPLE_QUERIES_LIMITATION,
