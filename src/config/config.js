@@ -94,7 +94,10 @@ module.exports = {
           return Object.assign(mapping, {
             neo4jConn: {
               ...mapping.neo4jConn,
-              password: CryptoJS.AES.encrypt(mapping.neo4jConn.password, 'bochk_ngp').toString(),
+              password: CryptoJS.AES.encrypt(
+                Buffer.from(mapping.neo4jConn.password, 'base64').toString('utf-8'),
+                'bochk_ngp'
+              ).toString(),
             },
           });
         }

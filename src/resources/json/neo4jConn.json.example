@@ -6,7 +6,8 @@
       "description": "IT Group",
       "url": "localhost",
       "user": "neo4j",
-      "password": "abcd1234",
+      // base64 encoded password, @SEE: https://emn178.github.io/online-tools/base64_encode.html
+      "password": "YWJjZDEyMzQ=", // equals to "abcd1234"
       "database": "neo4j",
       "useEncryption": true,
       "savePassword": false
