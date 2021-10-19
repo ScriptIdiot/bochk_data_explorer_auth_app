@@ -42,7 +42,7 @@ const getCypherSampleQueries = (user) => {
   if (!user || !user.sysRight) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
   }
-  const { cypherSampleQueriesMappings: mappings } = config.bochkDataExplorer;
+  const { cypherSampleQueriesLimit: limit, cypherSampleQueriesMappings: mappings } = config.bochkDataExplorer;
   const newMappings = mappings.map((mapping) => ({
     ...mapping,
     regExp: RegExp(`^.*${mapping.key || ''}.*`),
@@ -63,7 +63,7 @@ const getCypherSampleQueries = (user) => {
     .map((query, i) => ({
       text: query.header || `Sample Query Header hasn't specified at index: ${i}`,
       value: i,
-      code: query.query || `Sample Query Content hasn't specified at index: ${i}`,
+      code: query.query ? `${query.query}\nLIMIT ${limit}` : `Sample Query Content hasn't specified at index: ${i}`,
     }));
   return sampleCypherQueries;
 };

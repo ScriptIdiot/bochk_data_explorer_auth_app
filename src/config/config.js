@@ -34,6 +34,7 @@ const envVarsSchema = Joi.object()
       .description('should decrypt employee number with jar file or not')
       .default(false),
     BOCHK_NEO4J_SYSRIGHT_MAPPING_FILEPATH_ARRAY: Joi.string().required().description('SysRight JSON config filepath array'),
+    BOCHK_CYPHER_SAMPLE_QUERIES_LIMITATION: Joi.number().description('the search limit for sample queries').default(300),
     BOCHK_CYPHER_SAMPLE_QUERIES_MAPPING_FILEPATH_ARRAY: Joi.string()
       .required()
       .description('user group and cypher queries JSON config filepath array'),
@@ -90,6 +91,7 @@ module.exports = {
       }, []),
   },
   bochkDataExplorer: {
+    cypherSampleQueriesLimit: envVars.BOCHK_CYPHER_SAMPLE_QUERIES_LIMITATION,
     cypherSampleQueriesMappings: tryParseJSON(envVars.BOCHK_CYPHER_SAMPLE_QUERIES_MAPPING_FILEPATH_ARRAY, [])
       .map((filePath) => {
         return getJSONFileContent(filePath, []);
