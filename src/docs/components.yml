@@ -57,6 +57,170 @@ components:
         code:
           type: string
 
+    TransformGraphMLToCSVRequest:
+      type: object
+      properties:
+        graphMLContent: string
+      example:
+        graphMLContent:
+          <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+          <!--Created by yFiles for HTML 2.4-->
+          <graphml xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml.html/2.0/ygraphml.xsd " xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:VuejsNodeStyle="http://www.yworks.com/demos/yfiles-vuejs-node-style/1.0" xmlns:explorer-style="http://www.yworks.com/data-explorer/1.0" xmlns:y="http://www.yworks.com/xml/yfiles-common/3.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/3.0" xmlns:yjs="http://www.yworks.com/xml/yfiles-for-html/2.0/xaml" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <key id="d0" for="node" attr.name="NodeLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeLabels"/>
+            <key id="d1" for="node" attr.name="NodeGeometry" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeGeometry"/>
+            <key id="d2" for="all" attr.name="UserTags" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/UserTags"/>
+            <key id="d3" for="node" attr.name="NodeStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeStyle"/>
+            <key id="d4" for="edge" attr.name="EdgeLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeLabels"/>
+            <key id="d5" for="edge" attr.name="EdgeGeometry" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeGeometry"/>
+            <key id="d6" for="edge" attr.name="EdgeStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeStyle"/>
+            <key id="d7" for="port" attr.name="PortLabels" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLabels"/>
+            <key id="d8" for="port" attr.name="PortLocationParameter" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLocationParameter">
+              <default>
+                <x:Static Member="y:FreeNodePortLocationModel.NodeCenterAnchored"/>
+              </default>
+            </key>
+            <key id="d9" for="port" attr.name="PortStyle" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortStyle">
+              <default>
+                <x:Static Member="y:VoidPortStyle.Instance"/>
+              </default>
+            </key>
+            <key id="d10" attr.name="SharedData" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/SharedData"/>
+            <data key="d10">
+              <y:SharedData>
+                <yjs:Font x:Key="1" fontSize="14" fontFamily="'Roboto', 'Noto', sans-serif"/>
+                <yjs:ShapeNodeStyle x:Key="2" stroke="{x:Null}" fill="#FF485563" shape="ELLIPSE"/>
+                <yjs:SolidColorFill x:Key="3" color="#FF6F8A9B"/>
+                <y:FreeEdgeLabelModel x:Key="4"/>
+                <yjs:DefaultLabelStyle x:Key="5" backgroundFill="#FFFFFFFF" verticalTextAlignment="CENTER" horizontalTextAlignment="CENTER" font="{y:GraphMLReference 1}" textFill="#FF616161" textSize="14" insets="5,2,10,2">
+                  <yjs:DefaultLabelStyle.backgroundStroke>
+                    <yjs:Stroke fill="#FF6F8088" thickness="2"/>
+                  </yjs:DefaultLabelStyle.backgroundStroke>
+                </yjs:DefaultLabelStyle>
+                <yjs:PolylineEdgeStyle x:Key="6">
+                  <yjs:PolylineEdgeStyle.stroke>
+                    <yjs:Stroke fill="{y:GraphMLReference 3}" thickness="5"/>
+                  </yjs:PolylineEdgeStyle.stroke>
+                  <yjs:PolylineEdgeStyle.targetArrow>
+                    <yjs:Arrow type="SHORT" scale="2" fill="{y:GraphMLReference 3}"/>
+                  </yjs:PolylineEdgeStyle.targetArrow>
+                </yjs:PolylineEdgeStyle>
+              </y:SharedData>
+            </data>
+            <graph id="G" edgedefault="directed">
+              <node id="n0">
+                <data key="d0">
+                  <x:List>
+                    <y:Label LayoutParameter="{x:Static y:InteriorLabelModel.Center}" PreferredSize="38,17">
+                      <y:Label.Text>Movie</y:Label.Text>
+                      <y:Label.Style>
+                        <yjs:DefaultLabelStyle backgroundFill="#FF2196F3" font="{y:GraphMLReference 1}" textFill="WHITE" textSize="14"/>
+                      </y:Label.Style>
+                    </y:Label>
+                  </x:List>
+                </data>
+                <data key="d1">
+                  <y:RectD X="0" Y="0" Width="100" Height="100"/>
+                </data>
+                <data key="d2">
+                  <y:Json>{"identity":{"low":-57,"high":-1},"labels":["Movie"],"properties":{"name":"Movie","indexes":[],"constraints":[]},"propertyNames":["released","tagline","title"],"cypherLabel":"Movie","propertyTypes":{},"labelCombinations":[]}</y:Json>
+                </data>
+                <data key="d3">
+                  <y:GraphMLReference ResourceKey="2"/>
+                </data>
+                <port name="p0"/>
+              </node>
+              <node id="n1">
+                <data key="d0">
+                  <x:List>
+                    <y:Label LayoutParameter="{x:Static y:InteriorLabelModel.Center}" PreferredSize="44,17">
+                      <y:Label.Text>Person</y:Label.Text>
+                      <y:Label.Style>
+                        <yjs:DefaultLabelStyle backgroundFill="#FF2196F3" font="{y:GraphMLReference 1}" textFill="WHITE" textSize="14"/>
+                      </y:Label.Style>
+                    </y:Label>
+                  </x:List>
+                </data>
+                <data key="d1">
+                  <y:RectD X="86.70179002445158" Y="326.3697402267329" Width="100" Height="100"/>
+                </data>
+                <data key="d2">
+                  <y:Json>{"identity":{"low":-58,"high":-1},"labels":["Person"],"properties":{"name":"Person","indexes":[],"constraints":[]},"propertyNames":["born","name"],"cypherLabel":"Person","propertyTypes":{},"labelCombinations":[]}</y:Json>
+                </data>
+                <data key="d3">
+                  <y:GraphMLReference ResourceKey="2"/>
+                </data>
+                <port name="p0"/>
+                <port name="p1"/>
+                <port name="p2"/>
+              </node>
+              <edge id="e0" source="n1" target="n0" sourceport="p0" targetport="p0">
+                <data key="d4">
+                  <x:List>
+                    <y:Label Style="{y:GraphMLReference 5}" PreferredSize="111,21">
+                      <y:Label.Text><![CDATA[5 Relationships]]></y:Label.Text>
+                      <y:Label.LayoutParameter>
+                        <y:SmartEdgeLabelModelParameter>
+                          <y:SmartEdgeLabelModelParameter.Model>
+                            <y:SmartEdgeLabelModel/>
+                          </y:SmartEdgeLabelModelParameter.Model>
+                        </y:SmartEdgeLabelModelParameter>
+                      </y:Label.LayoutParameter>
+                    </y:Label>
+                  </x:List>
+                </data>
+                <data key="d6">
+                  <y:GraphMLReference ResourceKey="6"/>
+                </data>
+                <data key="d2">
+                  <x:Array Type="sys:Object">
+                    <y:Json>{"identity":{"low":-169,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-57,"high":-1},"type":"ACTED_IN","properties":{},"startNodeLabel":":Person","endNodeLabel":":Movie","propertyNames":["roles"],"propertyTypes":{}}</y:Json>
+                    <y:Json>{"identity":{"low":-170,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-57,"high":-1},"type":"DIRECTED","properties":{},"startNodeLabel":":Person","endNodeLabel":":Movie","propertyNames":[null],"propertyTypes":{}}</y:Json>
+                    <y:Json>{"identity":{"low":-171,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-57,"high":-1},"type":"PRODUCED","properties":{},"startNodeLabel":":Person","endNodeLabel":":Movie","propertyNames":[null],"propertyTypes":{}}</y:Json>
+                    <y:Json>{"identity":{"low":-174,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-57,"high":-1},"type":"REVIEWED","properties":{},"startNodeLabel":":Person","endNodeLabel":":Movie","propertyNames":["rating","summary"],"propertyTypes":{}}</y:Json>
+                    <y:Json>{"identity":{"low":-172,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-57,"high":-1},"type":"WROTE","properties":{},"startNodeLabel":":Person","endNodeLabel":":Movie","propertyNames":[null],"propertyTypes":{}}</y:Json>
+                  </x:Array>
+                </data>
+              </edge>
+              <edge id="e1" source="n1" target="n1" sourceport="p1" targetport="p2">
+                <data key="d4">
+                  <x:List>
+                    <y:Label Style="{y:GraphMLReference 5}" PreferredSize="78,21">
+                      <y:Label.Text>FOLLOWS</y:Label.Text>
+                      <y:Label.LayoutParameter>
+                        <y:CompositeLabelModelParameter>
+                          <y:CompositeLabelModelParameter.Parameter>
+                            <y:FreeEdgeLabelModelParameter Ratio="90" Distance="-90" Angle="-0.7853981633974483" Model="{y:GraphMLReference 4}"/>
+                          </y:CompositeLabelModelParameter.Parameter>
+                          <y:CompositeLabelModelParameter.Model>
+                            <y:CompositeLabelModel>
+                              <y:CompositeLabelModel.LabelModels>
+                                <y:GraphMLReference ResourceKey="4"/>
+                                <y:EdgePathLabelModel AutoRotationEnabled="false"/>
+                              </y:CompositeLabelModel.LabelModels>
+                            </y:CompositeLabelModel>
+                          </y:CompositeLabelModelParameter.Model>
+                        </y:CompositeLabelModelParameter>
+                      </y:Label.LayoutParameter>
+                    </y:Label>
+                  </x:List>
+                </data>
+                <data key="d5">
+                  <x:List>
+                    <y:Bend Location="226.70179002445158,286.3697402267329"/>
+                  </x:List>
+                </data>
+                <data key="d6">
+                  <y:GraphMLReference ResourceKey="6"/>
+                </data>
+                <data key="d2">
+                  <x:Array Type="sys:Object">
+                    <y:Json>{"identity":{"low":-173,"high":-1},"start":{"low":-58,"high":-1},"end":{"low":-58,"high":-1},"type":"FOLLOWS","properties":{},"startNodeLabel":":Person","endNodeLabel":":Person","propertyNames":[null],"propertyTypes":{}}</y:Json>
+                  </x:Array>
+                </data>
+              </edge>
+            </graph>
+          </graphml>
+
     Token:
       type: object
       properties:
@@ -86,6 +250,15 @@ components:
           type: string
 
   responses:
+    MissingParameters:
+      description: 'Parameters are missing'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Email already taken
     DuplicateEmail:
       description: Email already taken
       content:
@@ -122,6 +295,15 @@ components:
           example:
             code: 404
             message: Not found
+    ServerInternalError:
+      description: Server internal error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 500
+            message: Server Internal Error
 
   securitySchemes:
     bearerAuth:

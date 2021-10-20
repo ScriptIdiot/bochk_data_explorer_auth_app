@@ -38,6 +38,14 @@ const envVarsSchema = Joi.object()
     BOCHK_CYPHER_SAMPLE_QUERIES_MAPPING_FILEPATH_ARRAY: Joi.string()
       .required()
       .description('user group and cypher queries JSON config filepath array'),
+    BOCHK_GRAPH2CSV_OUTPUT_FILE_TYPE: Joi.string().description('the export file type').default('csv'),
+    BOCHK_GRAPH2CSV_OUTPUT_FOLDER_PATH: Joi.string().required().description('the export csv folder path'),
+    BOCHK_GRAPH2CSV_JAR_LOCATION: Joi.string()
+      .required()
+      .description('used for transform the graphML content as a CSV file'),
+    BOCHK_GRAPH2CSV_JAR_CLASS_NAME: Joi.string()
+      .required()
+      .description('call class from jar to transform the graphML content as a CSV file'),
   })
   .unknown();
 
@@ -102,5 +110,9 @@ module.exports = {
         }
         return accumulator;
       }, []),
+    exportGraphMLFileType: envVars.BOCHK_GRAPH2CSV_OUTPUT_FILE_TYPE,
+    exportGraphMLFolderPath: envVars.BOCHK_GRAPH2CSV_OUTPUT_FOLDER_PATH,
+    convertGraphML2CSVJarLocation: envVars.BOCHK_GRAPH2CSV_JAR_LOCATION,
+    convertGraphML2CSVJarClassName: envVars.BOCHK_GRAPH2CSV_JAR_CLASS_NAME,
   },
 };
