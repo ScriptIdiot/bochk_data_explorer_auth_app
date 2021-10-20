@@ -47,6 +47,7 @@ const getCypherSampleQueries = (user) => {
     ...mapping,
     regExp: RegExp(`^.*${mapping.key || ''}.*`),
   }));
+  const _appendLimitToQuery = (query) => (query.toLowerCase().indexOf('limit') === -1 ? `${query}\nLIMIT${limit}` : query);
   const sampleCypherQueries = user.sysRight
     .split(',')
     .map((right) => {
@@ -63,7 +64,7 @@ const getCypherSampleQueries = (user) => {
     .map((query, i) => ({
       text: query.header || `Sample Query Header hasn't specified at index: ${i}`,
       value: i,
-      code: query.query ? `${query.query}\nLIMIT ${limit}` : `Sample Query Content hasn't specified at index: ${i}`,
+      code: query.query ? _appendLimitToQuery(query.query) : `Sample Query Content hasn't specified at index: ${i}`,
     }));
   return sampleCypherQueries;
 };
