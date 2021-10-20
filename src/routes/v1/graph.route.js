@@ -1,11 +1,10 @@
 const express = require('express');
-// const auth = require('../../middlewares/auth');
+const auth = require('../../middlewares/auth');
 const graphController = require('../../controllers/graph.controller');
 
 const router = express.Router();
 
-// router.route('/transform-to-csv').post(auth('transformGraphMLToCSV'), graphController.transformGraphMLToCSV);
-router.route('/transform-to-csv').post(graphController.transformGraphMLToCSV);
+router.route('/transform-to-csv').post(auth('transformGraphMLToCSV'), graphController.transformGraphMLToCSV);
 
 module.exports = router;
 
