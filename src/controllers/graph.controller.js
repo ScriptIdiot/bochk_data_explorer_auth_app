@@ -9,9 +9,9 @@ const transformGraphMLToCSV = catchAsync(async (req, res) => {
     ...req.query,
   };
   logger.debug(JSON.stringify(requestPayload));
-  const csvFilePath = await graphService.transformGraphMLToCSV(requestPayload);
-  logger.debug(`Transformed and saved to this path: ${csvFilePath}`);
-  res.send(csvFilePath);
+  const transformationResult = await graphService.transformGraphMLToCSV(requestPayload);
+  logger.debug(`Transformed and saved to this path: ${JSON.stringify(transformationResult)}`);
+  res.send(transformationResult.filename || null);
 });
 
 module.exports = {

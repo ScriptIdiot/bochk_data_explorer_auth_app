@@ -7,7 +7,7 @@ const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
 const executeChildProcess = require('../utils/executeChildProcess');
 
-const _createTemporaryFolder = () => {
+const _createTemporaryFolders = () => {
   const projectDirectoryPath = path.dirname(require.main.filename || process.mainModule.filename);
   const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp');
   // eslint-disable-next-line security/detect-non-literal-fs-filename
@@ -15,14 +15,27 @@ const _createTemporaryFolder = () => {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.mkdirSync(temporaryDirectoryPath);
   }
+  const importTemporaryDirectoryPath = path.join(temporaryDirectoryPath, 'import');
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  if (!fs.existsSync(importTemporaryDirectoryPath)) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    fs.mkdirSync(importTemporaryDirectoryPath);
+  }
+  const exportTemporaryDirectoryPath = path.join(temporaryDirectoryPath, 'export');
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  if (!fs.existsSync(exportTemporaryDirectoryPath)) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    fs.mkdirSync(exportTemporaryDirectoryPath);
+  }
 };
 
 const _writeGraphMLContentToFile = (graphMLContent) => {
   const projectDirectoryPath = path.dirname(require.main.filename || process.mainModule.filename);
-  const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp');
+  const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp', 'import');
   const filepath = path.join(temporaryDirectoryPath, `${uuid4()}.graphml`);
+  const massagedGraphMLContent = graphMLContent.replace(/&lt;/g, '<');
   // eslint-disable-next-line security/detect-non-literal-fs-filename
-  fs.writeFileSync(filepath, graphMLContent);
+  fs.writeFileSync(filepath, massagedGraphMLContent);
   return filepath;
 };
 
@@ -31,7 +44,7 @@ const _copyExportedCSVFileToTemporaryFolder = (csvFilePath) => {
   if (fs.existsSync(csvFilePath)) {
     const filename = `${uuid4()}.csv`;
     const projectDirectoryPath = path.dirname(require.main.filename || process.mainModule.filename);
-    const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp');
+    const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp', 'export');
     const destinationFilePath = path.join(temporaryDirectoryPath, filename);
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     fs.copyFileSync(csvFilePath, destinationFilePath);
@@ -58,7 +71,7 @@ const transformGraphMLToCSV = async (parameters) => {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Parameter missing: graphMLContent');
   }
   try {
-    _createTemporaryFolder();
+    _createTemporaryFolders();
     const jarLocation = config.bochkDataExplorer.convertGraphML2CSVJarLocation;
     const jarClassName = config.bochkDataExplorer.convertGraphML2CSVJarClassName;
     const graphMLFilePath = _writeGraphMLContentToFile(graphMLContent);

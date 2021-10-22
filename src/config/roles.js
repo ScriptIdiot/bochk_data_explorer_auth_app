@@ -1,5 +1,5 @@
 const allRoles = {
-  user: ['getAccountInfo', 'getNeo4jConnections', 'getCypherSampleQueries', 'transformGraphMLToCSV', 'downloadFile'],
+  user: ['getAccountInfo', 'getNeo4jConnections', 'getCypherSampleQueries', 'transformGraphMLToCSV'],
   admin: ['getUsers', 'manageUsers'],
 };
 
