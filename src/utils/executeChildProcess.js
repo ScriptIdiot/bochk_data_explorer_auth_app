@@ -3,7 +3,7 @@ const BlueBirdPromise = require('bluebird');
 const { exec } = require('child_process');
 
 const executeChildProcess = async (command) => {
-  const response = await BlueBirdPromise.fromCallback((cb) => exec(command, cb));
+  const response = await BlueBirdPromise.fromCallback((cb) => exec(command, { encoding: 'utf-8' }, cb));
   return response;
 };
 

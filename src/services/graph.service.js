@@ -73,11 +73,11 @@ const transformGraphMLToCSV = async (parameters) => {
   try {
     _createTemporaryFolders();
     const jarLocation = config.bochkDataExplorer.convertGraphML2CSVJarLocation;
-    const jarClassName = config.bochkDataExplorer.convertGraphML2CSVJarClassName;
+    const graphMLUseUUIDAsFilename = config.bochkDataExplorer.exportGraphMLUseUUIDAsFilename;
     const graphMLFilePath = _writeGraphMLContentToFile(graphMLContent);
     const outputFolderPath = config.bochkDataExplorer.exportGraphMLFolderPath;
     const outputFileType = config.bochkDataExplorer.exportGraphMLFileType;
-    const command = `java -cp ${jarLocation} ${jarClassName} ${graphMLFilePath} ${outputFolderPath} ${outputFileType} D`;
+    const command = `java -jar ${jarLocation} --graph="${graphMLFilePath}" --type=${outputFileType} --outpath=${outputFolderPath} --isUUID=${graphMLUseUUIDAsFilename}`;
     let csvFilePath = await executeChildProcess(command);
     csvFilePath = csvFilePath.replace('\n', '');
     return _copyExportedCSVFileToTemporaryFolder(csvFilePath);
