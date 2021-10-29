@@ -39,30 +39,30 @@ const _writeGraphMLContentToFile = (graphMLContent) => {
   return filepath;
 };
 
-const _copyExportedCSVFileToTemporaryFolder = (csvFilePath) => {
+const _copyExportedCSVZipFileToTemporaryFolder = (csvZipFilePath) => {
   // eslint-disable-next-line security/detect-non-literal-fs-filename
-  if (fs.existsSync(csvFilePath)) {
-    const filename = `${uuid4()}.csv`;
+  if (fs.existsSync(csvZipFilePath)) {
+    const filename = `${uuid4()}.zip`;
     const projectDirectoryPath = path.dirname(require.main.filename || process.mainModule.filename);
     const temporaryDirectoryPath = path.join(projectDirectoryPath, 'tmp', 'export');
     const destinationFilePath = path.join(temporaryDirectoryPath, filename);
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    fs.copyFileSync(csvFilePath, destinationFilePath);
+    fs.copyFileSync(csvZipFilePath, destinationFilePath);
     return {
       filename,
       filePath: destinationFilePath,
     };
   }
   return {
-    filename: path.basename(csvFilePath),
-    filePath: csvFilePath,
+    filename: path.basename(csvZipFilePath),
+    filePath: csvZipFilePath,
   };
 };
 
 /**
  * Transforms the Graph ML content as a CSV file
  * @param {Object} parameters request parameters
- * @returns {String} csvFilePath the file path of the CSV file
+ * @returns {String} csvZipFilePath the file path of the CSV zip file
  */
 const transformGraphMLToCSV = async (parameters) => {
   logger.info(`Transform the graphML content process started`);
@@ -78,9 +78,9 @@ const transformGraphMLToCSV = async (parameters) => {
     const outputFolderPath = config.bochkDataExplorer.exportGraphMLFolderPath;
     const outputFileType = config.bochkDataExplorer.exportGraphMLFileType;
     const command = `java -jar ${jarLocation} --graph="${graphMLFilePath}" --type=${outputFileType} --outpath=${outputFolderPath} --isUUID=${graphMLUseUUIDAsFilename}`;
-    let csvFilePath = await executeChildProcess(command);
-    csvFilePath = csvFilePath.replace('\n', '');
-    return _copyExportedCSVFileToTemporaryFolder(csvFilePath);
+    let csvZipFilePath = await executeChildProcess(command);
+    csvZipFilePath = csvZipFilePath.replace('\n', '');
+    return _copyExportedCSVZipFileToTemporaryFolder(csvZipFilePath);
   } catch (err) {
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, `Failed: ${err.message}`);
   }
