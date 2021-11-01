@@ -47,7 +47,15 @@ const getCypherSampleQueries = (user) => {
     ...mapping,
     regExp: RegExp(`^.*${mapping.key || ''}.*`),
   }));
-  const _appendLimitToQuery = (query) => (query.toLowerCase().indexOf('limit') === -1 ? `${query}\nLIMIT${limit}` : query);
+  const _appendLimitToQuery = (query) => {
+    if (query.toLowerCase().indexOf('limit') !== -1) {
+      return query;
+    }
+    if (query.lastIndexOf(';') === query.length - 1) {
+      return `${query.substring(0, query.length - 2)}\nLIMIT ${limit};`;
+    }
+    return `${query}\nLIMIT ${limit}`;
+  };
   const sampleCypherQueries = user.sysRight
     .split(',')
     .map((right) => {

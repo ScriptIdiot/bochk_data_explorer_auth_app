@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 const { v4: uuid4 } = require('uuid');
 const httpStatus = require('http-status');
 const logger = require('../config/logger');
@@ -39,6 +40,45 @@ const _writeGraphMLContentToFile = (graphMLContent) => {
   return filepath;
 };
 
+const _cleanUpTemporaryFolderFiles = () => {
+  const currentDateTimeMoment = moment();
+  const outputFolderPath = config.bochkDataExplorer.exportGraphMLFolderPath;
+  const projectDirectoryPath = path.dirname(require.main.filename || process.mainModule.filename);
+  const temporaryDirectoryImportPath = path.join(projectDirectoryPath, 'tmp', 'import');
+  const temporaryDirectoryExportPath = path.join(projectDirectoryPath, 'tmp', 'export');
+  const _doCleanUp = (folderPath) => {
+    logger.info(`Do clean up for ${folderPath}`);
+    try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      const files = fs.readdirSync(folderPath);
+      files.forEach((file) => {
+        const absolutePath = path.resolve(folderPath, file);
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        const stats = fs.statSync(absolutePath);
+        if (stats.isFile()) {
+          const createdDateMoment = moment(stats.ctime);
+          const accessedDateMoment = moment(stats.atime);
+          const modifiedDateMoment = moment(stats.mtime);
+          if (
+            currentDateTimeMoment.diff(createdDateMoment) > 2 ||
+            currentDateTimeMoment.diff(modifiedDateMoment) > 2 ||
+            currentDateTimeMoment.diff(accessedDateMoment) > 2
+          ) {
+            logger.info(`Delete file from path: ${absolutePath}`);
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            fs.unlinkSync(absolutePath);
+          }
+        }
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+  _doCleanUp(outputFolderPath);
+  _doCleanUp(temporaryDirectoryImportPath);
+  _doCleanUp(temporaryDirectoryExportPath);
+};
+
 const _copyExportedCSVZipFileToTemporaryFolder = (csvZipFilePath) => {
   // eslint-disable-next-line security/detect-non-literal-fs-filename
   if (fs.existsSync(csvZipFilePath)) {
@@ -72,6 +112,7 @@ const transformGraphMLToCSV = async (parameters) => {
   }
   try {
     _createTemporaryFolders();
+    _cleanUpTemporaryFolderFiles();
     const jarLocation = config.bochkDataExplorer.convertGraphML2CSVJarLocation;
     const graphMLUseUUIDAsFilename = config.bochkDataExplorer.exportGraphMLUseUUIDAsFilename;
     const graphMLFilePath = _writeGraphMLContentToFile(graphMLContent);
