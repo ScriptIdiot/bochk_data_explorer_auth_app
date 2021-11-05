@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const CryptoJS = require('crypto-js');
 const config = require('../config/config');
 const ApiError = require('../utils/ApiError');
 
@@ -30,7 +31,7 @@ const getNeo4jConnections = (user) => {
     })
     .filter((connections) => connections.length > 0)
     .reduce((accumulator, current) => accumulator.concat(current), []);
-  return neo4jConns;
+  return CryptoJS.AES.encrypt(JSON.stringify(neo4jConns), user.umsSessionId).toString();
 };
 
 /**

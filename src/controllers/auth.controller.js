@@ -1,3 +1,4 @@
+const { v4: uuid4 } = require('uuid');
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const config = require('../config/config');
@@ -34,8 +35,12 @@ const validate = catchAsync(async (req, res) => {
     };
   }
   user = await bochkUMSService.verifyCredentials(user);
+  if (!user.umsSessionId || user.umsSessionId === null || user.umsSessionId === '') {
+    user.umsSessionId = uuid4();
+  }
   logger.debug(JSON.stringify(user));
   const tokens = await tokenService.generateAuthTokens(user);
+  res.cookie('umsSessionId', user.umsSessionId);
   res.cookie('accessToken', tokens.access.token, config.cookie.options);
   res.cookie('accessTokenExpiry', tokens.access.expires, config.cookie.options);
   res.cookie('refreshToken', tokens.refresh.token, config.cookie.options);
