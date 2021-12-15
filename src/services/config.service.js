@@ -35,6 +35,36 @@ const getNeo4jConnections = (user) => {
 };
 
 /**
+ * Get Neo4j browser configurations from config file
+ * @param {Object} user user object
+ * @returns {Object}
+ */
+const getNeo4jBrowserConfigurations = (user) => {
+  if (!user || !user.sysRight) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized: Please login to UMS');
+  }
+  const { url, userGroupDBHostMappings } = config.bochkNeo4jBrowser;
+  const newMappings = userGroupDBHostMappings.map((mapping) => ({
+    ...mapping,
+    regExp: RegExp(`^.*${mapping.key || ''}+.*`),
+  }));
+  const neo4jBrowserConfigurations = {
+    url,
+    host: 'neo4j://localhost:7687',
+  };
+  user.sysRight.split(',').forEach((right) => {
+    for (let i = 0; i < newMappings.length; i += 1) {
+      const mapping = newMappings[i];
+      if (mapping.regExp.test(right)) {
+        neo4jBrowserConfigurations.host = mapping.host;
+        return neo4jBrowserConfigurations;
+      }
+    }
+  });
+  return neo4jBrowserConfigurations;
+};
+
+/**
  * Get Data Explorer sample cypher queries from config file
  * @param {Object} user user object
  * @returns {Array}
@@ -80,5 +110,6 @@ const getCypherSampleQueries = (user) => {
 
 module.exports = {
   getNeo4jConnections,
+  getNeo4jBrowserConfigurations,
   getCypherSampleQueries,
 };

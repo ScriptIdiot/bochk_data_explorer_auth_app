@@ -31,18 +31,6 @@ const getLoginURL = () => {
 };
 
 /**
- * Get the Neo4j browser URL
- * @returns {string}
- */
-const getNeo4jBrowserConfigurations = () => {
-  const { url, dbHost } = config.bochkNeo4jBrowser;
-  return {
-    url,
-    host: dbHost,
-  };
-};
-
-/**
  * Decrypt empNum from BOCHK UMS response
  * @param {Object} parameters request parameters
  * @returns {Promise<Object>} user object
@@ -122,7 +110,6 @@ const verifyCredentials = async (user) => {
 
 module.exports = {
   getLoginURL,
-  getNeo4jBrowserConfigurations,
   decryptEmpNum,
   verifyAccessToNeo4jBrowserRight,
   verifyCredentials,

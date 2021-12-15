@@ -1,0 +1,6 @@
+[
+  {
+    "key": "IT",
+    "host": "neo4j://localhost:7687"
+  }
+]

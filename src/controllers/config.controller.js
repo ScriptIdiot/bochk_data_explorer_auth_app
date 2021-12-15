@@ -1,9 +1,9 @@
 const logger = require('../config/logger');
-const { bochkUMSService, configService } = require('../services');
+const { configService } = require('../services');
 
 const getBOCHKNeo4jBrowserConfigurations = (req, res) => {
   logger.debug(`Getting Neo4j Browser URL for user: ${JSON.stringify(req.user)}`);
-  const configurations = bochkUMSService.getNeo4jBrowserConfigurations();
+  const configurations = configService.getNeo4jBrowserConfigurations(req.user);
   res.send(configurations);
 };
 

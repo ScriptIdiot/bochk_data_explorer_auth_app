@@ -49,7 +49,9 @@ const envVarsSchema = Joi.object()
       .required()
       .description('used for transform the graphML content as a CSV file'),
     BOCHK_NEO4J_BROWSER_REDIRECT_URL: Joi.string().required().description('used for redirect to the Neo4j browser'),
-    BOCHK_NEO4J_BROWSER_DEFAULT_DB_HOST: Joi.string().required().description('used for connect to the Neo4j server'),
+    BOCHK_NEO4J_BROWSER_DATABASE_HOST_MAPPING_ARRAY: Joi.string()
+      .required()
+      .description('user group and Neo4j host name config filepath array'),
     BOCHK_NEO4J_BROWSER_ADMIN_USER_GROUP_SYSRIGHTS: Joi.string()
       .required()
       .description('sysrights that allowed to access the Neo4j browser with admin role permissions'),
@@ -142,7 +144,16 @@ module.exports = {
   },
   bochkNeo4jBrowser: {
     url: envVars.BOCHK_NEO4J_BROWSER_REDIRECT_URL,
-    dbHost: envVars.BOCHK_NEO4J_BROWSER_DEFAULT_DB_HOST,
+    userGroupDBHostMappings: tryParseJSON(envVars.BOCHK_NEO4J_BROWSER_DATABASE_HOST_MAPPING_ARRAY, [])
+      .map((filePath) => {
+        return getJSONFileContent(filePath, []);
+      })
+      .reduce((accumulator, current) => {
+        if (Array.isArray(current)) {
+          return accumulator.concat(current);
+        }
+        return accumulator;
+      }, []),
     accessWithAdminRoleSysRights: tryParseJSON(envVars.BOCHK_NEO4J_BROWSER_ADMIN_USER_GROUP_SYSRIGHTS, []),
     accessWithReaderRoleSysRights: tryParseJSON(envVars.BOCHK_NEO4J_BROWSER_READER_USER_GROUP_SYSRIGHTS, []),
   },
