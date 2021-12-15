@@ -4,6 +4,9 @@ const configController = require('../../controllers/config.controller');
 
 const router = express.Router();
 
+router
+  .route('/neo4j-browser')
+  .get(auth('getNeo4jBrowserConfigurations'), configController.getBOCHKNeo4jBrowserConfigurations);
 router.route('/neo4j-connections').get(auth('getNeo4jConnections'), configController.getNeo4jConnections);
 router.route('/cypher-sample-queries').get(auth('getCypherSampleQueries'), configController.getCypherSampleQueries);
 
@@ -14,6 +17,25 @@ module.exports = router;
  * tags:
  *   name: Config
  *   description: Config retrieval
+ */
+
+/**
+ * @swagger
+ * /config/neo4j-browser-url:
+ *   get:
+ *     summary: Get the Neo4j browser url
+ *     description: Fetch the Neo4j browser url
+ *     tags: [Auth]
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: /neo4j/browser/
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
  */
 
 /**

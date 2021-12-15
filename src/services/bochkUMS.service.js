@@ -9,6 +9,18 @@ const executeChildProcess = require('../utils/executeChildProcess');
 
 const getHttpsAgent = () => https.Agent({ rejectUnauthorized: false });
 
+const _checkSysRights = (configSysRights, userSysRights) => {
+  const _targetSysRightRegExpList = configSysRights.map((allowedSysRight) => RegExp(`^.*${allowedSysRight}.*`));
+  return userSysRights.map((right) => {
+    for (let i = 0; i < _targetSysRightRegExpList.length; i += 1) {
+      if (_targetSysRightRegExpList[i].test(right)) {
+        return 1;
+      }
+    }
+    return 0;
+  });
+};
+
 /**
  * Get BOCHK UMS login URL
  * @returns {string}
@@ -16,6 +28,18 @@ const getHttpsAgent = () => https.Agent({ rejectUnauthorized: false });
 const getLoginURL = () => {
   const { domain, loginURL } = config.bochkUMS;
   return `${domain}${loginURL}`;
+};
+
+/**
+ * Get the Neo4j browser URL
+ * @returns {string}
+ */
+const getNeo4jBrowserConfigurations = () => {
+  const { url, dbHost } = config.bochkNeo4jBrowser;
+  return {
+    url,
+    host: dbHost,
+  };
 };
 
 /**
@@ -43,10 +67,13 @@ const decryptEmpNum = async (parameters) => {
   }
 };
 
+const verifyAccessToNeo4jBrowserRight = (rights) =>
+  _checkSysRights(config.bochkUMS.allowedAccessNeo4JExplorerSysRights, rights).includes(1);
+
 /**
  * Verify user credentials with BOCHK UMS
  * @param {Object} user - User object
- * @returns {Promise<string>}
+ * @returns {Promise<object>} - User info object
  */
 const verifyCredentials = async (user) => {
   logger.info(`Verify user credentials from BOCHK UMS: ${JSON.stringify(user)}`);
@@ -61,22 +88,27 @@ const verifyCredentials = async (user) => {
     const userInfo = userFactory.fromBOCHKUMSVerifyCredentialsAPI(response.data);
     if (userInfo.isSuccess) {
       const { sysRight } = userInfo;
-      const { allowedAccessSysRights } = config.bochkUMS;
       const rights = sysRight.split(',');
       logger.debug(JSON.stringify(rights));
-      const targetSysRightRegExpList = allowedAccessSysRights.map((allowedSysRight) => RegExp(`^.*${allowedSysRight}.*`));
-      const checkSysRightResults = rights.map((right) => {
-        for (let i = 0; i < targetSysRightRegExpList.length; i += 1) {
-          if (targetSysRightRegExpList[i].test(right)) {
-            return 1;
-          }
-        }
-        return 0;
-      });
-      if (checkSysRightResults.includes(1)) {
+      if (_checkSysRights(config.bochkUMS.allowedAccessSysRights, rights).includes(1)) {
+        const hasAccessNeo4jBrowserSysRight = _checkSysRights(
+          config.bochkUMS.allowedAccessNeo4JExplorerSysRights,
+          rights
+        ).includes(1);
+        const hasAdminRolePermissions = _checkSysRights(
+          config.bochkNeo4jBrowser.accessWithAdminRoleSysRights,
+          rights
+        ).includes(1);
+        const hasReaderRolePermissions = _checkSysRights(
+          config.bochkNeo4jBrowser.accessWithReaderRoleSysRights,
+          rights
+        ).includes(1);
         return {
           ...user,
           ...userInfo,
+          hasAccessNeo4jBrowserRight: hasAccessNeo4jBrowserSysRight ? 1 : 0,
+          hasAdminRolePermissionsRight: hasAdminRolePermissions ? 1 : 0,
+          hasReaderRolePermissionsRight: hasReaderRolePermissions ? 1 : 0,
         };
       }
       throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden: No access right');
@@ -90,6 +122,8 @@ const verifyCredentials = async (user) => {
 
 module.exports = {
   getLoginURL,
+  getNeo4jBrowserConfigurations,
   decryptEmpNum,
+  verifyAccessToNeo4jBrowserRight,
   verifyCredentials,
 };

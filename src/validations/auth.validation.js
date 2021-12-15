@@ -21,6 +21,13 @@ const validatePostRequest = {
   }),
 };
 
+const validateNeo4jBrowserAuthRequest = {
+  body: Joi.object().keys({
+    username: Joi.string(),
+    password: Joi.string(),
+  }),
+};
+
 const register = {
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -72,6 +79,7 @@ const verifyEmail = {
 module.exports = {
   validateGetRequest,
   validatePostRequest,
+  validateNeo4jBrowserAuthRequest,
   register,
   login,
   logout,

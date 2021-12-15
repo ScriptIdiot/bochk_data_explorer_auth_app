@@ -8,6 +8,11 @@ const router = express.Router();
 router.get('/bochk-ums-login-url', authController.getBOCHKUMSLoginUrl);
 router.get('/validate', validate(authValidation.validateGetRequest), authController.validate);
 router.post('/validate', validate(authValidation.validatePostRequest), authController.validate);
+router.post(
+  '/neo4j/browser/validate',
+  validate(authValidation.validateNeo4jBrowserAuthRequest),
+  authController.validateNeo4jBrowserAuthRequest
+);
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', validate(authValidation.refreshTokens), authController.refreshTokens);

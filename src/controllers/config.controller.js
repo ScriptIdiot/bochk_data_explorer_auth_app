@@ -1,5 +1,11 @@
 const logger = require('../config/logger');
-const { configService } = require('../services');
+const { bochkUMSService, configService } = require('../services');
+
+const getBOCHKNeo4jBrowserConfigurations = (req, res) => {
+  logger.debug(`Getting Neo4j Browser URL for user: ${JSON.stringify(req.user)}`);
+  const configurations = bochkUMSService.getNeo4jBrowserConfigurations();
+  res.send(configurations);
+};
 
 const getNeo4jConnections = (req, res) => {
   logger.debug(`Getting NEO4J config for user: ${JSON.stringify(req.user)}`);
@@ -16,6 +22,7 @@ const getCypherSampleQueries = (req, res) => {
 };
 
 module.exports = {
+  getBOCHKNeo4jBrowserConfigurations,
   getNeo4jConnections,
   getCypherSampleQueries,
 };

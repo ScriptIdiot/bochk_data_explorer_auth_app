@@ -30,6 +30,9 @@ const envVarsSchema = Joi.object()
     BOCHK_UMS_SYSCODE: Joi.string().required().description('system code of BOCHK UMS'),
     BOCHK_UMS_APP_ID: Joi.string().required().description('application ID of BOCHK UMS'),
     BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS: Joi.string().required().description('sysrights that allowed to access'),
+    BOCHK_UMS_ALLOWED_TO_ACCESS_NEO4J_EXPLORER_SYSRIGHTS: Joi.string()
+      .required()
+      .description('sysrights that allowed to access the Neo4j explorer'),
     BOCHK_UMS_SHOULD_SIMULATE_UMS_APP: Joi.boolean().description('should enable simulation of UMS or not').default(false),
     BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR: Joi.boolean()
       .description('should decrypt employee number with jar file or not')
@@ -45,6 +48,14 @@ const envVarsSchema = Joi.object()
     BOCHK_GRAPH2CSV_JAR_LOCATION: Joi.string()
       .required()
       .description('used for transform the graphML content as a CSV file'),
+    BOCHK_NEO4J_BROWSER_REDIRECT_URL: Joi.string().required().description('used for redirect to the Neo4j browser'),
+    BOCHK_NEO4J_BROWSER_DEFAULT_DB_HOST: Joi.string().required().description('used for connect to the Neo4j server'),
+    BOCHK_NEO4J_BROWSER_ADMIN_USER_GROUP_SYSRIGHTS: Joi.string()
+      .required()
+      .description('sysrights that allowed to access the Neo4j browser with admin role permissions'),
+    BOCHK_NEO4J_BROWSER_READER_USER_GROUP_SYSRIGHTS: Joi.string()
+      .required()
+      .description('sysrights that allowed to access the Neo4j browser with reader role permissions'),
   })
   .unknown();
 
@@ -82,6 +93,7 @@ module.exports = {
     decryptEmpNumJarLocation: envVars.BOCHK_UMS_DECRYPT_EMPNUM_JAR_LOCATION,
     decryptEmpNumJarClassName: envVars.BOCHK_UMS_DECRYPT_EMPNUM_JAR_CLASS_NAME,
     allowedAccessSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_ACCESS_SYSRIGHTS, []),
+    allowedAccessNeo4JExplorerSysRights: tryParseJSON(envVars.BOCHK_UMS_ALLOWED_TO_ACCESS_NEO4J_EXPLORER_SYSRIGHTS, []),
     shouldEnableSimulationOfUMS: envVars.BOCHK_UMS_SHOULD_SIMULATE_UMS_APP,
     shouldDecryptEmpNumWithJar: envVars.BOCHK_UMS_SHOULD_DECRYPT_EMP_NUM_WITH_JAR,
   },
@@ -127,5 +139,11 @@ module.exports = {
     exportGraphMLUseUUIDAsFilename: envVars.BOCHK_GRAPH2CSV_IS_UUID,
     exportGraphMLFolderPath: envVars.BOCHK_GRAPH2CSV_OUTPUT_FOLDER_PATH,
     convertGraphML2CSVJarLocation: envVars.BOCHK_GRAPH2CSV_JAR_LOCATION,
+  },
+  bochkNeo4jBrowser: {
+    url: envVars.BOCHK_NEO4J_BROWSER_REDIRECT_URL,
+    dbHost: envVars.BOCHK_NEO4J_BROWSER_DEFAULT_DB_HOST,
+    accessWithAdminRoleSysRights: tryParseJSON(envVars.BOCHK_NEO4J_BROWSER_ADMIN_USER_GROUP_SYSRIGHTS, []),
+    accessWithReaderRoleSysRights: tryParseJSON(envVars.BOCHK_NEO4J_BROWSER_READER_USER_GROUP_SYSRIGHTS, []),
   },
 };

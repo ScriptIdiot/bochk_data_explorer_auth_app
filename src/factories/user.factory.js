@@ -43,7 +43,21 @@ const fromBOCHKUMSVerifyCredentialsAPI = (responseData) => {
   return {};
 };
 
+/**
+ * Convert the Neo4j auth plugin validate request payload to our standard
+ * @param {Object} requestPayload - request payload
+ * @returns {Object}
+ */
+const fromNeo4jAuthPluginValidateRequest = (requestPayload) => {
+  const { username: empNum, password: umsSessionId } = requestPayload;
+  return {
+    empNum,
+    umsSessionId,
+  };
+};
+
 module.exports = {
   fromBOCHKUMSValidateCallback,
   fromBOCHKUMSVerifyCredentialsAPI,
+  fromNeo4jAuthPluginValidateRequest,
 };
